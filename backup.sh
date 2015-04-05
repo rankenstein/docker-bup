@@ -3,9 +3,12 @@
 [ -z "$ENCFS_PASSWORD" ] && echo "No ENCFS_PASSWORD specified." && exit 1
 [ -z "$BUP_NAME" ] && echo "No BUP_NAME specified." && exit 1
 
+[ -z "$ENCFS_OPTIONS" ] && ENCFS_OPTIONS="--standard"
+declare -a "ENCFS_OPTIONS=($ENCFS_OPTIONS)"
+
 curlftpfs -o "$FTP_OPTIONS" "$FTP_URL" /mnt/ftp || exit $?
 
-echo "$ENCFS_PASSWORD" | encfs --stdinpass "$ENCFS_OPTIONS" /mnt/ftp /mnt/enc || exit $?
+echo "$ENCFS_PASSWORD" | encfs --stdinpass "${ENCFS_OPTIONS[@]}" /mnt/ftp /mnt/enc || exit $?
 
 export BUP_DIR=/mnt/enc
 [ ! -e /mnt/enc/objects ] && bup init || exit $?
