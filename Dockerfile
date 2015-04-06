@@ -6,8 +6,8 @@ RUN apt-get update && apt-get install -y \
 	curlftpfs \
 	encfs
 
-RUN mkdir /mnt/ftp /mnt/enc /data
-
 COPY ./backup.sh /usr/local/bin/backup.sh
+
+VOLUME [ "/backup" ]
 
 CMD "backup.sh"
